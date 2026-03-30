@@ -65,10 +65,10 @@ const ResultsList: React.FC<ResultsListProps> = ({
         results for "<em>{query}</em>"
       </MetaText>
       <InfiniteScroll
-        dataLength={results.length} 
-        next={onLoadMore}
+        dataLength={results.length}  // current item count — triggers re-check
+        next={onLoadMore}            // called when user scrolls to threshold
         hasMore={hasMore}
-        scrollThreshold={1}
+        scrollThreshold={0.98}          // trigger at 98% scroll depth
         loader={
           <LoadingMore aria-live="polite" data-testid="loading-more">
             Loading more…

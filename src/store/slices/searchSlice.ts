@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { SearchState, ItunesResult, SearchApiResponse, ITEMS_PER_PAGE } from '../../types';
 
+//Async thunk for fetching search results from our express backend
 export const fetchResults = createAsyncThunk<
   SearchApiResponse & { append: boolean },
   { term: string; offset: number; append?: boolean },
@@ -22,6 +23,7 @@ export const fetchResults = createAsyncThunk<
   }
 );
 
+// Initial state
 const initialState: SearchState = {
   query: '',
   results: [],
@@ -32,6 +34,7 @@ const initialState: SearchState = {
   hasMore: false,
 };
 
+// slice definition
 const searchSlice = createSlice({
   name: 'search',
   initialState,

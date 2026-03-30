@@ -8,9 +8,11 @@ import App from '../App';
 import searchReducer from '../store/slices/searchSlice';
 import { makeTrack, makeAlbum, makeArtist } from './testUtils';
 
+// Mock axios for API 
 vi.mock('axios');
 const axiosGet = vi.mocked(axios.get);
 
+// Test InfiniteScroll behaviour in ResultsList.test.tsx.
 vi.mock('react-infinite-scroll-component', () => ({
   default: ({
     children,
@@ -47,6 +49,7 @@ const renderApp = () => {
   };
 };
 
+// Tests
 describe('App integration', () => {
   beforeEach(() => vi.clearAllMocks());
 

@@ -3,6 +3,9 @@ import { render, screen } from '@testing-library/react';
 import ResultsList from '../components/ResultsList';
 import { makeTrack, makeAlbum, makeArtist } from './testUtils';
 
+// react-infinite-scroll-component uses window.scroll events.
+// in jsdom we just need the component to mount — mock the package
+// so we can test our own logic without the scroll internals
 vi.mock('react-infinite-scroll-component', () => ({
   default: ({
     children,
