@@ -29,7 +29,7 @@ describe('ResultCard', () => {
     it('renders emoji placeholder when no artwork', () => {
       render(<ResultCard item={makeTrack({ artworkUrl100: undefined })} />);
       expect(screen.queryByRole('img')).not.toBeInTheDocument();
-      expect(screen.getByText('🎵')).toBeInTheDocument();
+      expect(screen.getByText('track')).toBeInTheDocument();
     });
 
     it('has a descriptive aria-label', () => {
@@ -64,7 +64,7 @@ describe('ResultCard', () => {
 
     it('renders album emoji placeholder when no artwork', () => {
       render(<ResultCard item={makeAlbum({ artworkUrl100: undefined })} />);
-      expect(screen.getByText('💿')).toBeInTheDocument();
+      expect(screen.getByText('collection')).toBeInTheDocument();
     });
   });
 
@@ -86,7 +86,7 @@ describe('ResultCard', () => {
 
     it('renders microphone emoji placeholder for artists', () => {
       render(<ResultCard item={makeArtist({ artworkUrl100: undefined })} />);
-      expect(screen.getByText('🎤')).toBeInTheDocument();
+      expect(screen.getByText('artist')).toBeInTheDocument();
     });
   });
 });

@@ -68,7 +68,7 @@ const ResultsList: React.FC<ResultsListProps> = ({
         dataLength={results.length} 
         next={onLoadMore}
         hasMore={hasMore}
-        scrollThreshold={0.85}
+        scrollThreshold={1}
         loader={
           <LoadingMore aria-live="polite" data-testid="loading-more">
             Loading more…

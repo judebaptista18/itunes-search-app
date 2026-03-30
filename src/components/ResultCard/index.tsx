@@ -17,7 +17,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ item }) => {
         <Artwork src={item.artworkUrl100} alt={title} loading="lazy" />
       ) : (
         <ArtworkPlaceholder aria-hidden="true">
-          {item.wrapperType ? item.wrapperType : "Music"}
+          {item.wrapperType ?? "track"}
         </ArtworkPlaceholder>
       )}
       <Info>
