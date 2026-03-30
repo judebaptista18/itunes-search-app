@@ -1,6 +1,6 @@
 import React from 'react';
 import { ItunesResult } from '../../types';
-import { Card, Badge , Artwork, ArtworkPlaceholder, Info, Title, Sub} from './resultCard.styles';
+import { Card, Badge , Artwork, ArtworkPlaceholder, Info, Title, Sub} from './ResultCard.styles';
 import { formatTitle, formatSub, typeLabel } from './ResultCard.utils';
 
 interface ResultCardProps {

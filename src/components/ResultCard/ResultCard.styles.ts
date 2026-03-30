@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { theme } from '../../styles/GlobalStyle';
 import { typeColor } from './ResultCard.utils';
 
-export const Card = styled.article`
+ const Card = styled.article`
   display: flex;
   gap: 16px;
   align-items: center;
@@ -19,7 +19,7 @@ export const Card = styled.article`
   }
 `;
 
-export const Artwork = styled.img`
+ const Artwork = styled.img`
   width: 56px;
   height: 56px;
   border-radius: ${theme.radii.sm};
@@ -28,7 +28,7 @@ export const Artwork = styled.img`
   background: ${theme.colors.border};
 `;
 
-export const ArtworkPlaceholder = styled.div`
+ const ArtworkPlaceholder = styled.div`
   width: 56px;
   height: 56px;
   border-radius: ${theme.radii.sm};
@@ -40,12 +40,12 @@ export const ArtworkPlaceholder = styled.div`
   flex-shrink: 0;
 `;
 
-export const Info = styled.div`
+ const Info = styled.div`
   flex: 1;
   min-width: 0;
 `;
 
-export const Title = styled.p`
+ const Title = styled.p`
   font-size: 0.95rem;
   font-weight: 600;
   color: ${theme.colors.text};
@@ -54,7 +54,7 @@ export const Title = styled.p`
   text-overflow: ellipsis;
 `;
 
-export const Sub = styled.p`
+ const Sub = styled.p`
   font-size: 0.82rem;
   color: ${theme.colors.textMuted};
   margin-top: 2px;
@@ -63,7 +63,7 @@ export const Sub = styled.p`
   text-overflow: ellipsis;
 `;
 
-export const Badge = styled.span<{ $type: string }>`
+ const Badge = styled.span<{ $type: string }>`
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -74,3 +74,5 @@ export const Badge = styled.span<{ $type: string }>`
   border-radius: ${theme.radii.pill};
   flex-shrink: 0;
 `;
+
+export { Card, Badge , Artwork, ArtworkPlaceholder, Info, Title, Sub};
