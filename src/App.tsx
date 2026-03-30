@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { ThemeProvider } from 'styled-components';
-import { GlobalStyle, theme } from './components/GlobalStyle';
+import { GlobalStyle, theme } from './styles/GlobalStyle';
 import SearchBar from './components/SearchBar';
 import ResultsList from './components/ResultsList';
 import { useAppDispatch, useAppSelector } from './hooks/reduxHooks';

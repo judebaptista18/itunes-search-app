@@ -1,11 +1,5 @@
-import React, { useState, useCallback } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { theme } from './GlobalStyle';
-
-interface SearchBarProps {
-  onSearch: (term: string) => void;
-  isLoading: boolean;
-}
+import { theme } from '../../styles/GlobalStyle';
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(-8px); }
@@ -64,42 +58,4 @@ const Button = styled.button<{ $loading?: boolean }>`
   &:active:not(:disabled) { transform: translateY(0); }
 `;
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading }) => {
-  const [value, setValue] = useState('');
-
-  const handleSubmit = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
-      const trimmed = value.trim();
-      if (trimmed) onSearch(trimmed);
-    },
-    [value, onSearch]
-  );
-
-  return (
-    <Wrapper>
-      <Form onSubmit={handleSubmit} role="search" aria-label="Search iTunes">
-        <Input
-          type="search"
-          placeholder="Search artists, albums, songs…"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          aria-label="Search term"
-          data-testid="search-input"
-          disabled={isLoading}
-        />
-        <Button
-          type="submit"
-          disabled={isLoading || !value.trim()}
-          $loading={isLoading}
-          data-testid="search-button"
-          aria-label="Search"
-        >
-          {isLoading ? 'Searching…' : 'Search'}
-        </Button>
-      </Form>
-    </Wrapper>
-  );
-};
-
-export default SearchBar;
+export { Wrapper, Form, Input, Button };
