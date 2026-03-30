@@ -1,5 +1,4 @@
-import React, { useCallback } from 'react';
-import styled from 'styled-components';
+import React, { useCallback, useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyle, theme } from './styles/GlobalStyle';
 import SearchBar from './components/SearchBar';
@@ -15,6 +14,18 @@ const App: React.FC = () => {
     useAppSelector((state) => state.search);
 
   const isLoading = status === 'loading';
+
+  // On mount, perform a default search to populate the UI
+  useEffect(() => {
+    dispatch(setQuery('music'));
+    dispatch(
+      fetchResults({
+        term: 'music',
+        offset: 0,
+        append: false,
+      })
+    );
+  }, [dispatch]);
 
   const handleSearch = useCallback(
     (term: string) => {
