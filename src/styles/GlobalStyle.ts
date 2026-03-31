@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
+// Centralized theme object for consistent styling across the app, including colors, fonts, border radii, and shadows.
 export const theme = {
   colors: {
     bg: '#0a0a0f',

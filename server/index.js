@@ -5,9 +5,11 @@ import { dirname, join } from "path";
 import axios from "axios";
 import process from "process";
 
+// Get __dirname in ES module context
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Simple Express server to proxy iTunes Search API requests and serve the React app.
 const app = express();
 const PORT = process.env.PORT || 8080;
 
@@ -18,6 +20,7 @@ app.use(express.json());
 app.get("/api/search", async (req, res) => {
   const { term, offset = "0", limit = "10" } = req.query;
 
+  // Validate required 'term' parameter
   if (!term) {
     return res.status(400).json({ error: "Search term is required" });
   }
@@ -37,12 +40,14 @@ app.get("/api/search", async (req, res) => {
       },
     );
 
+    // Return paginated results based on offset and limit
     return res.json({
       resultCount: parsed.resultCount,
       totalResults: parsed.results.length,
       results: parsed.results.slice(offsetNum, offsetNum + limitNum),
     });
   } catch (err) {
+    // Differentiate between API errors and network errors for better error messages
     const message = err.response
       ? "Failed to parse iTunes response"
       : "Failed to reach iTunes API";
@@ -54,7 +59,9 @@ app.get("/api/search", async (req, res) => {
 });
 
 // production - Vite outputs to /dist
+// Serve static files from the dist directory and handle client-side routing
 if (process.env.NODE_ENV === "production") {
+  
   const distPath = join(__dirname, "..", "dist");
   app.use(express.static(distPath));
   app.use("/api", (req, res) => {

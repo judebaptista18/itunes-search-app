@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { theme } from '../../styles/GlobalStyle';
 import { typeColor } from './ResultCard.utils';
 
+// Styled components for ResultCard, using theme values and utility functions for dynamic styling.
  const Card = styled.article`
   display: flex;
   gap: 16px;
@@ -19,6 +20,7 @@ import { typeColor } from './ResultCard.utils';
   }
 `;
 
+// Image element for artwork, with fixed size and object-fit to maintain aspect ratio.
  const Artwork = styled.img`
   width: 56px;
   height: 56px;
@@ -28,6 +30,7 @@ import { typeColor } from './ResultCard.utils';
   background: ${theme.colors.border};
 `;
 
+// Placeholder for missing artwork, showing item type as text.
  const ArtworkPlaceholder = styled.div`
   width: 56px;
   height: 56px;
@@ -40,11 +43,13 @@ import { typeColor } from './ResultCard.utils';
   flex-shrink: 0;
 `;
 
+// Info container holds title and subtitle, allowing them to grow/shrink as needed.
  const Info = styled.div`
   flex: 1;
   min-width: 0;
 `;
 
+// Title styling with ellipsis for overflow, ensuring consistent card height.
  const Title = styled.p`
   font-size: 0.95rem;
   font-weight: 600;
@@ -54,6 +59,7 @@ import { typeColor } from './ResultCard.utils';
   text-overflow: ellipsis;
 `;
 
+// Subtitle styling with smaller font and muted color, also using ellipsis for overflow.
  const Sub = styled.p`
   font-size: 0.82rem;
   color: ${theme.colors.textMuted};
@@ -63,6 +69,7 @@ import { typeColor } from './ResultCard.utils';
   text-overflow: ellipsis;
 `;
 
+// Badge color is determined by item type, using the typeColor helper function.
  const Badge = styled.span<{ $type: string }>`
   font-size: 0.7rem;
   font-weight: 700;

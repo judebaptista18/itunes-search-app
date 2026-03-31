@@ -51,6 +51,7 @@ const searchSlice = createSlice({
       state.error = null;
     },
   },
+  // Handle async thunk lifecycle actions
   extraReducers: (builder) => {
     builder
       .addCase(fetchResults.pending, (state) => {
