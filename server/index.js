@@ -34,12 +34,11 @@ app.get("/api/search", async (req, res) => {
       {
         params: {
           term: String(term),
-          limit: 100,
+          limit: 200,  //max limit per iTunes API, we'll handle pagination on our end
           entity: "allTrack,album,musicArtist",
         },
       },
     );
-
     // Return paginated results based on offset and limit
     return res.json({
       resultCount: parsed.resultCount,
