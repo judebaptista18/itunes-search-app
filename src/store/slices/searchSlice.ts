@@ -21,10 +21,20 @@ export const fetchResults = createAsyncThunk<
       });
       return { ...data, append };
     } catch (err: unknown) {
-      const message = axios.isAxiosError(err)
-        ? (err.response?.data?.error ?? "Something went wrong.")
-        : "Something went wrong.";
-      return rejectWithValue(message);
+      // Extract error message from API response if available, otherwise use generic message.
+      // Use a type-narrowed structural check rather than axios.isAxiosError()
+      // so this works correctly whether axios is mocked in tests or not.
+      const apiError =
+        typeof err === "object" &&
+        err !== null &&
+        "response" in err &&
+        (err as { response?: { data?: { error?: string } } }).response?.data
+          ?.error;
+      return rejectWithValue(
+        typeof apiError === "string"
+          ? apiError
+          : "Something went wrong. Please try again.",
+      );
     }
   },
 );
