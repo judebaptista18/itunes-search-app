@@ -1,6 +1,11 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { SearchState, ItunesResult, SearchApiResponse, ITEMS_PER_PAGE } from '../../types';
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
+import {
+  SearchState,
+  ItunesResult,
+  SearchApiResponse,
+  ITEMS_PER_PAGE,
+} from "../../types";
 
 //Async thunk for fetching search results from our express backend
 export const fetchResults = createAsyncThunk<
@@ -8,27 +13,28 @@ export const fetchResults = createAsyncThunk<
   { term: string; offset: number; append?: boolean },
   { rejectValue: string }
 >(
-  'search/fetchResults',
+  "search/fetchResults",
   async ({ term, offset, append = false }, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get<SearchApiResponse>('/api/search', {
+      const { data } = await axios.get<SearchApiResponse>("/api/search", {
         params: { term, offset, limit: ITEMS_PER_PAGE },
       });
       return { ...data, append };
-    } catch (err: any) {
-      return rejectWithValue(
-        err?.response?.data?.error ?? 'Something went wrong. Please try again.'
-      );
+    } catch (err: unknown) {
+      const message = axios.isAxiosError(err)
+        ? (err.response?.data?.error ?? "Something went wrong.")
+        : "Something went wrong.";
+      return rejectWithValue(message);
     }
-  }
+  },
 );
 
 // Initial state
 const initialState: SearchState = {
-  query: '',
+  query: "",
   results: [],
   totalResults: 0,
-  status: 'idle',
+  status: "idle",
   error: null,
   page: 0,
   hasMore: false,
@@ -36,7 +42,7 @@ const initialState: SearchState = {
 
 // slice definition
 const searchSlice = createSlice({
-  name: 'search',
+  name: "search",
   initialState,
   reducers: {
     setQuery(state, action: PayloadAction<string>) {
@@ -47,7 +53,7 @@ const searchSlice = createSlice({
       state.totalResults = 0;
       state.page = 0;
       state.hasMore = false;
-      state.status = 'idle';
+      state.status = "idle";
       state.error = null;
     },
   },
@@ -55,26 +61,27 @@ const searchSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchResults.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
         state.error = null;
       })
       .addCase(fetchResults.fulfilled, (state, action) => {
         const { results, totalResults, append } = action.payload;
-        state.status = 'succeeded';
+        state.status = "succeeded";
         state.error = null;
 
         if (append) {
           // Deduplicate by composite key before merging
           const existingIds = new Set(
             state.results.map(
-              (r) => `${r.wrapperType}-${r.trackId ?? r.collectionId ?? r.artistId}`
-            )
+              (r) =>
+                `${r.wrapperType}-${r.trackId ?? r.collectionId ?? r.artistId}`,
+            ),
           );
           const newUnique = results.filter(
             (r: ItunesResult) =>
               !existingIds.has(
-                `${r.wrapperType}-${r.trackId ?? r.collectionId ?? r.artistId}`
-              )
+                `${r.wrapperType}-${r.trackId ?? r.collectionId ?? r.artistId}`,
+              ),
           );
           state.results = [...state.results, ...newUnique];
         } else {
@@ -86,8 +93,8 @@ const searchSlice = createSlice({
         state.hasMore = state.results.length < totalResults;
       })
       .addCase(fetchResults.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload ?? 'Unknown error';
+        state.status = "failed";
+        state.error = action.payload ?? "Unknown error";
       });
   },
 });
