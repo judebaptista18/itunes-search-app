@@ -22,7 +22,6 @@ export interface SearchApiResponse {
   resultCount: number;
   results: ItunesResult[];
   totalResults: number;
-  fromCache?: boolean;
 }
 
 //Redux state 
