@@ -45,10 +45,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading }) => {
           type="search"
           placeholder="Search artists, albums, songs…"
           value={value}
-          onChange={(e) => setValue(e.target.value)} // Contolled input, updates local state on each keystroke.
+          onChange={(e) => setValue(e.target.value)} // Controlled input, updates local state on each keystroke.
           aria-label="Search term"
           data-testid="search-input"
-          disabled={isLoading} //Disable input during loading to prevent duplicate requests
+          disabled={isLoading} // Disable input during loading to prevent duplicate requests
         />
         <Button
           type="submit"
