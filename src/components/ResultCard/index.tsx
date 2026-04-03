@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { ItunesResult } from "../../types";
 import {
   Card,
@@ -53,4 +53,4 @@ const ResultCard: React.FC<ResultCardProps> = ({ item }) => {
   );
 };
 
-export default ResultCard;
+export default memo(ResultCard);
