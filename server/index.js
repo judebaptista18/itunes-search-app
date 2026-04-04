@@ -63,7 +63,7 @@ if (process.env.NODE_ENV === "production") {
   
   const distPath = join(__dirname, "..", "dist");
   app.use(express.static(distPath));
-  app.use("/api", (req, res) => {
+  app.use("/api", (_req, res) => {
     res.status(404).json({ error: "API route not found" });
   });
   app.use((_req, res) => {
