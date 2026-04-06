@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import ResultsList from "../components/ResultsList";
 import { makeTrack, makeAlbum, makeArtist } from "./testUtils";
 import userEvent from "@testing-library/user-event";
+import { searchSuggestions } from "../components/ResultsList/ResultsList.utils";
 
 // react-infinite-scroll-component uses window.scroll events.
 // in jsdom we just need the component to mount — mock the package
@@ -186,6 +187,8 @@ describe("ResultsList", () => {
       expect(screen.getByTestId("initial-suggestions")).toBeInTheDocument();
       expect(screen.getByText(/start exploring music/i)).toBeInTheDocument();
       expect(screen.getByText(/search for songs/i)).toBeInTheDocument();
+      // Check that suggestion chips are rendered
+      expect(screen.getAllByTestId("suggestion-chip")).toHaveLength(searchSuggestions.length);
     });
 
     it("calls onSelect with the correct suggestion when a chip is clicked", async () => {
