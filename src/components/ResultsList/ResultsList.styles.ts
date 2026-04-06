@@ -76,4 +76,31 @@ const CardList = styled.div`
   gap: 8px;
 `;
 
-export { Wrapper, MetaText, EmptyState, ErrorState, Spinner, LoadingMore, EndMessage, CardList };
+// Suggestions section shown in idle state, with clickable chips for popular search terms.
+const Suggestions = styled.div`
+  text-align: center;
+  padding: 60px 20px;
+  color: ${theme.colors.textMuted};
+  h3    { font-size: 1.1rem; color: ${theme.colors.text}; margin-bottom: 6px; }
+  p     { font-size: 0.88rem; }
+  div.chips {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+  a.chip {
+    display: inline-block;
+    padding: 6px 14px;
+    background: ${theme.colors.surfaceHover};
+    color: ${theme.colors.text};
+    border-radius: ${theme.radii.pill};
+    font-size: 0.85rem;
+    transition: background-color 0.2s ease;
+    &:hover {
+      background-color: ${theme.colors.surface};
+    }
+  }
+`;
+
+export { Wrapper, MetaText, EmptyState, ErrorState, Spinner, LoadingMore, EndMessage, CardList, Suggestions };

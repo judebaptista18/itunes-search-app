@@ -2,6 +2,7 @@ import React from "react";
 
 import InfiniteScroll from "react-infinite-scroll-component";
 import ResultCard from "../ResultCard";
+import { searchSuggestions } from "./ResultsList.utils";
 import { ItunesResult } from "../../types";
 import {
   CardList,
@@ -12,6 +13,7 @@ import {
   MetaText,
   LoadingMore,
   EndMessage,
+  Suggestions,
 } from "./ResultsList.styles";
 
 interface ResultsListProps {
@@ -22,6 +24,7 @@ interface ResultsListProps {
   onLoadMore: () => void;
   totalResults: number;
   query: string;
+  onSelect: (query: string) => void; // handling suggestion clicks
 }
 
 const ResultsList: React.FC<ResultsListProps> = ({
@@ -32,7 +35,37 @@ const ResultsList: React.FC<ResultsListProps> = ({
   onLoadMore,
   totalResults,
   query,
+  onSelect,
 }) => {
+  /**
+   * Idle state (before first search).
+   * Display suggestions or instructions before the first search is made.
+   */
+  if (status === "idle") {
+    return (
+      <Wrapper>
+        <Suggestions role="status" data-testid="initial-suggestions">
+          <h2>Start exploring music</h2>
+          <p>Search for songs, albums, or artists</p>
+
+          <div className="chips">
+            {searchSuggestions && searchSuggestions.map((item) => (
+              <a
+                href="#"
+                key={item}
+                onClick={() => onSelect(item)}
+                data-testid="suggestion-chip"
+                className="chip"
+              >
+                {item}
+              </a>
+            ))}
+          </div>
+        </Suggestions>
+      </Wrapper>
+    );
+  }
+
   /**
    * Initial loading state (first API call).
    * Only show full-page spinner when no data is available yet.

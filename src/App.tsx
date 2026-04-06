@@ -23,25 +23,6 @@ const App: React.FC = () => {
    */
   const isLoading = status === "loading";
 
-  /**
-   * Initial data fetch on mount.
-   * Provides a better UX by avoiding an empty screen.
-   *
-   * NOTE:
-   * In React StrictMode (dev), this may run twice.
-   * This is expected behavior and does not affect production.
-   */
-  useEffect(() => {
-    dispatch(setQuery("music"));
-    dispatch(
-      fetchResults({
-        term: "music",
-        offset: 0,
-        append: false,
-      }),
-    );
-  }, [dispatch]);
-
  /**
    * Handles new search submissions.
    *
@@ -101,6 +82,7 @@ const App: React.FC = () => {
             onLoadMore={handleLoadMore}
             totalResults={totalResults}
             query={query}
+            onSelect={handleSearch} 
           />
         </Main>
       </Page>
