@@ -1,13 +1,13 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import ResultsList from '../components/ResultsList';
-import { makeTrack, makeAlbum, makeArtist } from './testUtils';
-import { on } from 'events';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import ResultsList from "../components/ResultsList";
+import { makeTrack, makeAlbum, makeArtist } from "./testUtils";
+import userEvent from "@testing-library/user-event";
 
 // react-infinite-scroll-component uses window.scroll events.
 // in jsdom we just need the component to mount — mock the package
 // so we can test our own logic without the scroll internals
-vi.mock('react-infinite-scroll-component', () => ({
+vi.mock("react-infinite-scroll-component", () => ({
   default: ({
     children,
     loader,
@@ -30,20 +30,20 @@ vi.mock('react-infinite-scroll-component', () => ({
 
 const defaultProps = {
   results: [],
-  status: 'idle' as const,
+  status: "idle" as const,
   error: null,
   hasMore: false,
   onLoadMore: vi.fn(),
   totalResults: 0,
-  query: '',
+  query: "",
   onSelect: vi.fn(),
 };
 
-describe('ResultsList', () => {
-  describe('loading state', () => {
-    it('shows spinner on initial load (no results yet)', () => {
+describe("ResultsList", () => {
+  describe("loading state", () => {
+    it("shows spinner on initial load (no results yet)", () => {
       render(<ResultsList {...defaultProps} status="loading" />);
-      expect(screen.getByLabelText('Loading results')).toBeInTheDocument();
+      expect(screen.getByLabelText("Loading results")).toBeInTheDocument();
     });
 
     it('shows "Loading more…" inside InfiniteScroll while paginating', () => {
@@ -55,23 +55,25 @@ describe('ResultsList', () => {
           totalResults={20}
           hasMore={true}
           query="test"
-        />
+        />,
       );
       // spinner is gone when results already exist
-      expect(screen.queryByLabelText('Loading results')).not.toBeInTheDocument();
+      expect(
+        screen.queryByLabelText("Loading results"),
+      ).not.toBeInTheDocument();
       // InfiniteScroll renders the loader when hasMore=true
-      expect(screen.getByTestId('loading-more')).toBeInTheDocument();
+      expect(screen.getByTestId("loading-more")).toBeInTheDocument();
     });
   });
 
-  describe('empty / no results state', () => {
-    it('shows no-results message when search succeeded with 0 results', () => {
+  describe("empty / no results state", () => {
+    it("shows no-results message when search succeeded with 0 results", () => {
       render(<ResultsList {...defaultProps} status="succeeded" />);
-      expect(screen.getByTestId('no-results')).toBeInTheDocument();
+      expect(screen.getByTestId("no-results")).toBeInTheDocument();
       expect(screen.getByText(/no results found/i)).toBeInTheDocument();
     });
 
-    it('suggests trying a different query', () => {
+    it("suggests trying a different query", () => {
       render(<ResultsList {...defaultProps} status="succeeded" />);
       expect(screen.getByText(/try a different/i)).toBeInTheDocument();
     });
@@ -82,29 +84,33 @@ describe('ResultsList', () => {
     // });
   });
 
-  describe('error state', () => {
-    it('shows error message on failure', () => {
+  describe("error state", () => {
+    it("shows error message on failure", () => {
       render(
         <ResultsList
           {...defaultProps}
           status="failed"
           error="Failed to reach iTunes API"
-        />
+        />,
       );
-      expect(screen.getByRole('alert')).toBeInTheDocument();
-      expect(screen.getByText('Failed to reach iTunes API')).toBeInTheDocument();
+      expect(screen.getByRole("alert")).toBeInTheDocument();
+      expect(
+        screen.getByText("Failed to reach iTunes API"),
+      ).toBeInTheDocument();
     });
 
-    it('shows generic heading on error', () => {
-      render(<ResultsList {...defaultProps} status="failed" error="Network error" />);
+    it("shows generic heading on error", () => {
+      render(
+        <ResultsList {...defaultProps} status="failed" error="Network error" />,
+      );
       expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
     });
   });
 
-  describe('results list', () => {
+  describe("results list", () => {
     const results = [makeTrack(), makeAlbum(), makeArtist()];
 
-    it('renders one ResultCard per result item', () => {
+    it("renders one ResultCard per result item", () => {
       render(
         <ResultsList
           {...defaultProps}
@@ -112,12 +118,12 @@ describe('ResultsList', () => {
           results={results}
           totalResults={3}
           query="test"
-        />
+        />,
       );
-      expect(screen.getAllByTestId('result-card')).toHaveLength(3);
+      expect(screen.getAllByTestId("result-card")).toHaveLength(3);
     });
 
-    it('displays result count and query in meta text', () => {
+    it("displays result count and query in meta text", () => {
       render(
         <ResultsList
           {...defaultProps}
@@ -125,13 +131,13 @@ describe('ResultsList', () => {
           results={results}
           totalResults={30}
           query="coldplay"
-        />
+        />,
       );
       expect(screen.getByText(/showing/i)).toBeInTheDocument();
       expect(screen.getByText(/coldplay/)).toBeInTheDocument();
     });
 
-    it('renders the InfiniteScroll container', () => {
+    it("renders the InfiniteScroll container", () => {
       render(
         <ResultsList
           {...defaultProps}
@@ -139,12 +145,12 @@ describe('ResultsList', () => {
           results={results}
           totalResults={3}
           query="test"
-        />
+        />,
       );
-      expect(screen.getByTestId('infinite-scroll')).toBeInTheDocument();
+      expect(screen.getByTestId("infinite-scroll")).toBeInTheDocument();
     });
 
-    it('shows end message when hasMore is false', () => {
+    it("shows end message when hasMore is false", () => {
       render(
         <ResultsList
           {...defaultProps}
@@ -153,13 +159,13 @@ describe('ResultsList', () => {
           totalResults={3}
           query="test"
           hasMore={false}
-        />
+        />,
       );
-      expect(screen.getByTestId('end-message')).toBeInTheDocument();
+      expect(screen.getByTestId("end-message")).toBeInTheDocument();
       expect(screen.getByText(/end of results/i)).toBeInTheDocument();
     });
 
-    it('does NOT show end message when hasMore is true', () => {
+    it("does NOT show end message when hasMore is true", () => {
       render(
         <ResultsList
           {...defaultProps}
@@ -168,9 +174,28 @@ describe('ResultsList', () => {
           totalResults={30}
           query="test"
           hasMore={true}
-        />
+        />,
       );
-      expect(screen.queryByTestId('end-message')).not.toBeInTheDocument();
+      expect(screen.queryByTestId("end-message")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("idle state", () => {
+    it("shows initial suggestions before first search", () => {
+      render(<ResultsList {...defaultProps} status="idle" />);
+      expect(screen.getByTestId("initial-suggestions")).toBeInTheDocument();
+      expect(screen.getByText(/start exploring music/i)).toBeInTheDocument();
+      expect(screen.getByText(/search for songs/i)).toBeInTheDocument();
+    });
+
+    it("calls onSelect with the correct suggestion when a chip is clicked", async () => {
+      const onSelect = vi.fn();
+      render(
+        <ResultsList {...defaultProps} status="idle" onSelect={onSelect} />,
+      );
+      await userEvent.click(screen.getByText("Drake"));
+      expect(onSelect).toHaveBeenCalledTimes(1);
+      expect(onSelect).toHaveBeenCalledWith("Drake");
     });
   });
 });

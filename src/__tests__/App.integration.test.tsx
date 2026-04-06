@@ -183,4 +183,36 @@ describe('App integration', () => {
       expect(screen.getByTestId('infinite-scroll')).toBeInTheDocument();
     });
   });
+
+  it('triggers a search when an suggestion chip is clicked', async () => {
+  axiosGet.mockResolvedValueOnce({
+    data: {
+      resultCount: 1,
+      results: [makeTrack({ artistName: 'Drake' })],
+      totalResults: 1,
+    },
+  });
+
+  renderApp();
+
+  const drakeChip = screen.getByText('Drake');
+  expect(drakeChip).toBeInTheDocument();
+
+  await userEvent.click(drakeChip);
+
+  // After the click, the API should have been called with the suggestion term
+  await waitFor(() => {
+    expect(axiosGet).toHaveBeenCalledWith(
+      '/api/search',
+      expect.objectContaining({ params: expect.objectContaining({ term: 'Drake' }) })
+    );
+  });
+
+  await waitFor(() => {
+    expect(screen.getAllByTestId('result-card')).toHaveLength(1);
+  });
+
+  // Idle suggestions should no longer be visible
+  expect(screen.queryByTestId('initial-suggestions')).not.toBeInTheDocument();
+});
 });
